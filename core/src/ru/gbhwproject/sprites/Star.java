@@ -28,6 +28,15 @@ public class Star extends Sprite {
         animateTimer = Rnd.nextFloat(0, 0.5f);
     }
 
+    public Star(TextureAtlas atlas, boolean speed) throws GameException {
+        super(atlas.findRegion("star"));
+        height = Rnd.nextFloat(0.004f, 0.008f);
+        float vx = Rnd.nextFloat(-0.06f, 0.1f);
+        float vy = Rnd.nextFloat(-0.5f, -2f);
+        v = new Vector2(vx, vy);
+        animateTimer = Rnd.nextFloat(0, 0.5f);
+    }
+
     @Override
     public void resize(Rect worldBounds) {
         this.worldBounds = worldBounds;

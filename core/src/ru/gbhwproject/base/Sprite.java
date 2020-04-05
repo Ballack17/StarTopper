@@ -6,13 +6,21 @@ import com.badlogic.gdx.math.Vector2;
 
 import ru.gbhwproject.exception.GameException;
 import ru.gbhwproject.math.Rect;
+import ru.gbhwproject.utils.Regions;
 
 public class Sprite extends Rect {
+
 
     protected float angle;
     protected float scale = 1f;
     protected TextureRegion[] regions;
     protected int frame;
+    private boolean destroyed = false;
+    float animationLong = 0f;
+
+    public Sprite() {
+
+    }
 
     public Sprite(TextureRegion region) throws GameException {
         if (region == null) {
@@ -22,13 +30,27 @@ public class Sprite extends Rect {
         regions[0] = region;
     }
 
+    public Sprite(TextureRegion region, int rows, int cols, int frames) throws GameException {
+        if (region == null) {
+            throw new GameException("Region is null");
+        }
+        this.regions = Regions.split(region, rows, cols, frames);
+    }
+
     public void setHeightProportion(float height) {
         setHeight(height);
         float aspect = regions[frame].getRegionWidth() / (float) regions[frame].getRegionHeight();
         setWidth(height * aspect);
     }
 
-    public void update(float delta) {    }
+    public void update(float delta) {
+
+        if( animationLong >= 60 / this.regions.length){
+            frame = (frame + 1) % this.regions.length;
+            animationLong = 0;}
+        else {
+            animationLong += 1;}
+    }
 
     public void draw(SpriteBatch batch) {
         batch.draw(
@@ -71,5 +93,17 @@ public class Sprite extends Rect {
 
     public void setScale(float scale) {
         this.scale = scale;
+    }
+
+    public void destroy() {
+        destroyed = true;
+    }
+
+    public void flushDestroy() {
+        destroyed = false;
+    }
+
+    public boolean isDestroyed() {
+        return destroyed;
     }
 }

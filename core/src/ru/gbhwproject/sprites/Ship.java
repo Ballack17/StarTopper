@@ -1,6 +1,8 @@
 package ru.gbhwproject.sprites;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -15,6 +17,7 @@ public class Ship extends Sprite {
     private static final float SHIP_HEIGHT = 0.12f;
     private static final float BOTTOM_MARGIN = 0.05f;
     private static final int INVALID_POINTER = -1;
+    private static final float SHOOT_SPEED = 0.05f;
 
     private Rect worldBounds;
     private BulletPool bulletPool;
@@ -30,11 +33,15 @@ public class Ship extends Sprite {
     private int leftPointer = INVALID_POINTER;
     private int rightPointer = INVALID_POINTER;
 
+    private int countToShoot = 0;
+    private long id_1;
+    Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/laser.wav"));
+
     public Ship(TextureAtlas atlas, BulletPool bulletPool) throws GameException {
-        super(atlas.findRegion("main_ship"), 5, 5, 25);
+        super(atlas.findRegion("shipall25"), 5, 5, 25);
         this.bulletPool = bulletPool;
-        bulletRegion = atlas.findRegion("bulletMainShip");
-        bulletV = new Vector2(0, 0.5f);
+        bulletRegion = atlas.findRegion("ball");
+        bulletV = new Vector2(0, 0.8f);
         v0 = new Vector2(0.5f, 0);
         v = new Vector2();
     }
@@ -58,6 +65,11 @@ public class Ship extends Sprite {
             setRight(worldBounds.getRight());
             stop();
         }
+        if (countToShoot >= 1/SHOOT_SPEED) {
+            shoot();
+            countToShoot = 0;}
+        else countToShoot+=1;
+
     }
 
     @Override
@@ -142,7 +154,8 @@ public class Ship extends Sprite {
 
     public void shoot() {
         Bullet bullet = bulletPool.obtain();
-        bullet.set(this, bulletRegion, pos, bulletV, 0.01f, worldBounds, 1);
+        bullet.set(this, bulletRegion, bullet.pos.set(pos.x, this.getTop()),bulletV, 0.01f, worldBounds, 1);
+        id_1 = sound.play(0.05f);
     }
 
     private void moveRight() {

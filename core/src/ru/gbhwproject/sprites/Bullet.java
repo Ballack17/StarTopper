@@ -1,5 +1,7 @@
 package ru.gbhwproject.sprites;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
@@ -33,6 +35,7 @@ public class Bullet extends Sprite {
         setHeightProportion(height);
         this.worldBounds = worldBounds;
         this.damage = damage;
+
     }
 
     @Override
@@ -50,4 +53,5 @@ public class Bullet extends Sprite {
     public Object getOwner() {
         return owner;
     }
+
 }

@@ -158,7 +158,7 @@ public class GameScreen extends BaseScreen {
                 if (bullet.getOwner().getClass().getName().equals("ru.gbhwproject.sprites.MainShip")) {
                     if (enemy.pos.dst(bullet.pos) < hitDist) {
                         enemy.destroy();
-                        explosionSound.play(0.01f, 1.8f, 0f);
+                        explosionSound.play(0.03f, 1.3f, 0f);
                         bullet.destroy();
                     }
                 }

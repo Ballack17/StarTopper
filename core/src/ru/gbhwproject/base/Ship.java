@@ -21,6 +21,7 @@ public abstract class Ship extends Sprite{
     protected Sound shootSound;
     protected int hp;
     protected float shootVolume;
+    protected boolean shootable;
 
     protected Vector2 v0;
     protected Vector2 v;
@@ -38,11 +39,16 @@ public abstract class Ship extends Sprite{
     @Override
     public void update(float delta) {
         super.update(delta);
-        pos.mulAdd(v, delta);
-        reloadTimer += delta;
-        if (reloadTimer >= reloadInterval) {
-            reloadTimer = 0f;
-            shoot();
+        if (getTop() > worldBounds.getTop() && v.y > - 0.04f) {
+            pos.mulAdd(new Vector2(v.x,v.y * 30 ),delta);
+        } else {
+            pos.mulAdd(v, delta);
+            reloadTimer += delta;
+            if (reloadTimer >= reloadInterval) {
+                reloadTimer = 0f;
+                if (this.shootable)
+                shoot();
+            }
         }
     }
 

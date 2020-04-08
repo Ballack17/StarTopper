@@ -41,11 +41,11 @@ public class Bullet extends Sprite {
     public void update(float delta) {
         pos.mulAdd(v, delta);
         if (v.y < 0) {
-            if (getBottom() == worldBounds.getBottom())
+            if (getBottom() <= worldBounds.getBottom())
             destroy();
         }
         if (v.y > 0) {
-            if (getTop() == worldBounds.getTop()){
+            if (getTop() >= worldBounds.getTop()){
                 destroy();
             }
         }

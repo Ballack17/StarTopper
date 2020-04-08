@@ -27,6 +27,7 @@ public class MainShip extends Ship {
         this.bulletPool = bulletPool;
         this.shootSound = shootSound;
         this.shootVolume = 0.1f;
+        this.shootable = true;
         bulletRegion = atlas.findRegion("ball");
         bulletV = new Vector2(0, 0.5f);
         v0 = new Vector2(0.2f, 0);
@@ -132,8 +133,6 @@ public class MainShip extends Ship {
                 } else {
                     stop();
                 }
-//            case Input.Keys.UP:
- //               shoot();
                 break;
         }
         return false;

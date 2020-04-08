@@ -25,7 +25,13 @@ public class Enemy extends Ship {
     @Override
     public void update(float delta) {
         super.update(delta);
-        if (getBottom() <= worldBounds.getBottom()) {
+        if (getRight() >= worldBounds.getRight()){
+            v.x = - v.x;
+        }
+        if (getLeft() <= worldBounds.getLeft()) {
+            v.x = - v.x;
+        }
+        if (getTop() <= worldBounds.getBottom()) {
             destroy();
         }
     }
@@ -41,7 +47,8 @@ public class Enemy extends Ship {
             Sound shootSound,
             float shootVolume,
             int hp,
-            float height
+            float height,
+            boolean shootable
     ) {
         this.regions = regions;
         this.v0.set(v0);
@@ -55,6 +62,7 @@ public class Enemy extends Ship {
         this.shootVolume = shootVolume;
         this.hp = hp;
         this.v.set(v0);
+        this.shootable = shootable;
         setHeightProportion(height);
     }
 }

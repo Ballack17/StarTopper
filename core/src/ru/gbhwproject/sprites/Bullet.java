@@ -35,14 +35,19 @@ public class Bullet extends Sprite {
         setHeightProportion(height);
         this.worldBounds = worldBounds;
         this.damage = damage;
-
     }
 
     @Override
     public void update(float delta) {
         pos.mulAdd(v, delta);
-        if (isOutside(worldBounds)) {
+        if (v.y < 0) {
+            if (getBottom() == worldBounds.getBottom())
             destroy();
+        }
+        if (v.y > 0) {
+            if (getTop() == worldBounds.getTop()){
+                destroy();
+            }
         }
     }
 
@@ -53,5 +58,4 @@ public class Bullet extends Sprite {
     public Object getOwner() {
         return owner;
     }
-
 }

@@ -5,17 +5,21 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 import ru.gbhwproject.base.SpritesPool;
 import ru.gbhwproject.exception.GameException;
-import ru.gbhwproject.sprites.enemies.EnemyShipLv1;
+import ru.gbhwproject.math.Rect;
+import ru.gbhwproject.sprites.enemies.Enemy;
 
-public class EnemyPool extends SpritesPool<EnemyShipLv1> {
+public class EnemyPool extends SpritesPool<Enemy> {
+
+    private BulletPool bulletPool;
+    private Rect worldBounds;
+
+    public EnemyPool(BulletPool bulletPool, Rect worldBounds) {
+        this.bulletPool = bulletPool;
+        this.worldBounds = worldBounds;
+    }
 
     @Override
-    protected EnemyShipLv1 newObject() {
-        try {
-            return new EnemyShipLv1(new TextureAtlas(Gdx.files.internal("textures/mainAtlas.tpack")));
-        } catch (GameException e) {
-            e.printStackTrace();
-        }
-        return null;
+    protected Enemy newObject() {
+        return new Enemy(bulletPool, worldBounds);
     }
 }

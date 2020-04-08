@@ -2,9 +2,7 @@ package ru.gbhwproject.screen;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -16,7 +14,6 @@ import ru.gbhwproject.math.Rect;
 import ru.gbhwproject.sprites.Background;
 import ru.gbhwproject.sprites.ButtonExit;
 import ru.gbhwproject.sprites.ButtonPlay;
-import ru.gbhwproject.sprites.Ship;
 import ru.gbhwproject.sprites.Star;
 
 public class MenuScreen extends BaseScreen {

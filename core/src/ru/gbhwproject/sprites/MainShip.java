@@ -32,7 +32,7 @@ public class MainShip extends Ship {
         bulletV = new Vector2(0, 0.5f);
         v0 = new Vector2(0.2f, 0);
         v = new Vector2();
-        reloadInterval = 0.4f;
+        reloadInterval = 0.25f;
         reloadTimer = reloadInterval;
         bulletHeight = 0.01f;
         damage = 1;

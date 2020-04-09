@@ -1,6 +1,8 @@
 package ru.gbhwproject.base;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
@@ -8,6 +10,7 @@ import ru.gbhwproject.exception.GameException;
 import ru.gbhwproject.math.Rect;
 import ru.gbhwproject.pool.BulletPool;
 import ru.gbhwproject.sprites.Bullet;
+import ru.gbhwproject.utils.Regions;
 
 public abstract class Ship extends Sprite{
 
@@ -40,7 +43,7 @@ public abstract class Ship extends Sprite{
     public void update(float delta) {
         super.update(delta);
         if (getTop() > worldBounds.getTop() && v.y > - 0.04f) {
-            pos.mulAdd(new Vector2(v.x,v.y * 30 ),delta);
+            pos.mulAdd(new Vector2(v.x,- 0.3f ),delta);
         } else {
             pos.mulAdd(v, delta);
             reloadTimer += delta;
@@ -52,11 +55,11 @@ public abstract class Ship extends Sprite{
         }
     }
 
-    public float getShootVolume() {
+    private float getShootVolume() {
         return this.shootVolume;
     }
 
-    public float ShootPositionModifer() {
+    private float ShootPositionModifer() {
         if (this.getClass().getName().equals("ru.gbhwproject.sprites.MainShip"))
             return 1f;
         else return -1f;
@@ -67,4 +70,5 @@ public abstract class Ship extends Sprite{
         bullet.set(this, bulletRegion, new Vector2(pos.x, pos.y + this.getHalfHeight()*this.ShootPositionModifer()), bulletV, bulletHeight, worldBounds, damage);
         shootSound.play(this.getShootVolume());
     }
+
 }

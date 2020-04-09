@@ -1,6 +1,7 @@
 package ru.gbhwproject.base;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
@@ -16,7 +17,7 @@ public class Sprite extends Rect {
     protected TextureRegion[] regions;
     protected int frame;
     protected boolean destroyed = false;
-    float animationLong = 0f;
+    protected float animationLong = 0f;
 
     public Sprite() {
 

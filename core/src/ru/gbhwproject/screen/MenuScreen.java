@@ -31,6 +31,7 @@ public class MenuScreen extends BaseScreen {
     private Star[] stars;
     private ButtonExit buttonExit;
     private ButtonPlay buttonPlay;
+    private Music music;
 
     public MenuScreen(Game game) {
         this.game = game;
@@ -39,7 +40,7 @@ public class MenuScreen extends BaseScreen {
     @Override
     public void show() {
         super.show();
-        Music music = Gdx.audio.newMusic(Gdx.files.internal("sounds/music.mp3"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("sounds/music.mp3"));
         music.setLooping(true);
         music.play();
 
@@ -60,6 +61,7 @@ public class MenuScreen extends BaseScreen {
         bg.dispose();
         atlas.dispose();
         super.dispose();
+        music.dispose();
     }
 
     @Override

@@ -21,7 +21,7 @@ public class EnemyEmitter {
     private static final float ENEMY_SMALL_SHOOT_VOLUME = 0.1f;
 
     private static final float ENEMY_MEDIUM_HEIGHT = 0.125f;
-    private static final float ENEMY_MEDIUM_BULLET_HEIGHT = 0.02f;
+    private static final float ENEMY_MEDIUM_BULLET_HEIGHT = 0.015f;
     private static final float ENEMY_MEDIUM_BULLET_VY = -0.55f;
     private static final int ENEMY_MEDIUM_DAMAGE = 5;
     private static final float ENEMY_MEDIUM_RELOAD_INTERVAL = 2f;
@@ -29,7 +29,7 @@ public class EnemyEmitter {
     private static final float ENEMY_MEDIUM_SHOOT_VOLUME = 0.4f;
 
     private static final float ENEMY_BIG_HEIGHT = 0.15f;
-    private static final float ENEMY_BIG_BULLET_HEIGHT = 0.04f;
+    private static final float ENEMY_BIG_BULLET_HEIGHT = 0.02f;
     private static final float ENEMY_BIG_BULLET_VY = -0.75f;
     private static final int ENEMY_BIG_DAMAGE = 10;
     private static final float ENEMY_BIG_RELOAD_INTERVAL = 3f;
@@ -72,7 +72,7 @@ public class EnemyEmitter {
 
     public void generate(float delta) {
         float type = (float) Math.random();
-        if (type < 0.995) {generateSolo(delta);}
+        if (type < 0.996) {generateSolo(delta);}
         else {generateSeries(delta);}
     }
 
@@ -82,9 +82,9 @@ public class EnemyEmitter {
             generateTimer = 0f;
             Enemy enemy = enemyPool.obtain();
             float type = (float) Math.random();
-            if (type < 0.5f) {
+            if (type < 0.63f) {
                 smallSet(enemy);
-            } else if (type < 0.8f) {
+            } else if (type < 0.85f) {
                 middleSet(enemy);
             } else {
                 bigSet(enemy);
@@ -95,7 +95,7 @@ public class EnemyEmitter {
 
     public void generateSeries(float delta) {
         int type = (int) Rnd.nextFloat(3f,7f);
-        float vx = Rnd.nextFloat(-0.3f, 0.3f);
+        float vx = Rnd.nextFloat(-0.5f, 0.5f);
         float vy = Rnd.nextFloat(-0.3f, -0.5f);
         for (int i = 0; i < type; i++) {
             Enemy enemy = enemyPool.obtain();

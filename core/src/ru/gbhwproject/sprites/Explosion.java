@@ -1,6 +1,7 @@
 package ru.gbhwproject.sprites;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -14,30 +15,37 @@ import ru.gbhwproject.utils.Regions;
 
 public class Explosion extends Sprite {
 
-    private boolean isActive = false;
-    private Rect worldBounds;
-    private TextureRegion explosionRegion;
-    private TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("textures/mainAtlas.tpack"));
+    private static final float ANIMATE_INTERVAL = 0.017f;
 
-    public Explosion() throws GameException {
-        explosionRegion = atlas.findRegion("explosion");
-        this.regions = Regions.split(explosionRegion, 9, 9, 75);
-        this.worldBounds = worldBounds;
-        setHeightProportion(0.1f);
+    private float animateTimer;
 
-   }
+    private Sound explosionSound;
+
+    public Explosion(TextureAtlas atlas, Sound explosionSound) throws GameException {
+        super(atlas.findRegion("explosion"), 9, 9, 74);
+        this.explosionSound = explosionSound;
+    }
+
+    public void set(Vector2 pos, float height) {
+        this.pos.set(pos);
+        setHeightProportion(height);
+        explosionSound.play();
+    }
 
     @Override
     public void update(float delta) {
-        if (animationLong >= 60 / this.regions.length) {
-            frame = (frame + 1);
-            animationLong = 0;
-            if (frame == 74) { destroy(); frame = 0;}
-        } else {
-            animationLong += 1;
+        animateTimer += delta;
+        if (animateTimer >= ANIMATE_INTERVAL) {
+            animateTimer = 0f;
+            if (++frame == regions.length) {
+                destroy();
+            }
         }
     }
 
-    public void set (Vector2 pos)
-       {this.pos = pos;}
+    @Override
+    public void destroy() {
+        super.destroy();
+        frame = 0;
+    }
 }

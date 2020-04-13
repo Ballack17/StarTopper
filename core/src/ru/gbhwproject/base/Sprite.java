@@ -45,7 +45,9 @@ public class Sprite extends Rect {
     }
 
     public void update(float delta) {
+    }
 
+    public void animation(){
         if( animationLong >= 60 / this.regions.length){
             frame = (frame + 1) % this.regions.length;
             animationLong = 0;}

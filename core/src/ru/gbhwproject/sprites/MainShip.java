@@ -9,6 +9,7 @@ import ru.gbhwproject.base.Ship;
 import ru.gbhwproject.exception.GameException;
 import ru.gbhwproject.math.Rect;
 import ru.gbhwproject.pool.BulletPool;
+import ru.gbhwproject.pool.ExplosionPool;
 
 public class MainShip extends Ship {
 
@@ -22,13 +23,14 @@ public class MainShip extends Ship {
     private int leftPointer = INVALID_POINTER;
     private int rightPointer = INVALID_POINTER;
 
-    public MainShip(TextureAtlas atlas, BulletPool bulletPool, Sound shootSound) throws GameException {
-        super(atlas.findRegion("shipall25"), 5, 5, 25);
+    public MainShip(TextureAtlas atlas, BulletPool bulletPool, ExplosionPool explosionPool, Sound shootSound) throws GameException {
+        super(atlas.findRegion("main_ship"), 1, 2, 2);
         this.bulletPool = bulletPool;
+        this.explosionPool = explosionPool;
         this.shootSound = shootSound;
         this.shootVolume = 0.1f;
         this.shootable = true;
-        bulletRegion = atlas.findRegion("ball");
+        bulletRegion = atlas.findRegion("bulletMainShip");
         bulletV = new Vector2(0, 0.5f);
         v0 = new Vector2(0.2f, 0);
         v = new Vector2();
@@ -36,7 +38,7 @@ public class MainShip extends Ship {
         reloadTimer = reloadInterval;
         bulletHeight = 0.01f;
         damage = 1;
-        hp = 100;
+        hp = 1;
     }
 
     @Override
@@ -48,16 +50,37 @@ public class MainShip extends Ship {
 
     @Override
     public void update(float delta) {
-        super.update(delta);
+        animation();
+        reloadTimer += delta;
+        if (reloadTimer >= reloadInterval) {
+            reloadTimer = 0f;
+            shoot();
+        }
         pos.mulAdd(v, delta);
-        if (getLeft() + 0.01f < worldBounds.getLeft()) {
-            setLeft(worldBounds.getLeft() - 0.01f);
+        if (getLeft() < worldBounds.getLeft() ) {
+            setLeft(worldBounds.getLeft());
             stop();
         }
-        if (getRight() - 0.01f > worldBounds.getRight()) {
-            setRight(worldBounds.getRight() + 0.01f);
+        if (getRight() > worldBounds.getRight() ) {
+            setRight(worldBounds.getRight());
             stop();
         }
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    public int getHp() { return this.hp;}
+
+    @Override
+    public float getLeft() {
+        return (pos.x - halfWidth);
+    }
+
+    @Override
+    public float getRight() {
+        return (pos.x + halfWidth );
     }
 
     @Override
@@ -98,6 +121,18 @@ public class MainShip extends Ship {
         return false;
     }
 
+    @Override
+    public void damage(int damage) {
+        damageAnimateTimer = 0f;
+        frame = 1;
+        hp -= damage;
+        if (hp <= 0) {
+            hp = 0;
+            boom();
+        }
+    }
+
+
     public boolean keyDown(int keycode) {
         switch (keycode) {
             case Input.Keys.A:
@@ -126,6 +161,7 @@ public class MainShip extends Ship {
                 }
                 break;
             case Input.Keys.D:
+                shoot();
             case Input.Keys.RIGHT:
                 pressedRight = false;
                 if (pressedLeft) {

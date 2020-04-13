@@ -11,11 +11,13 @@ import ru.gbhwproject.exception.GameException;
 import ru.gbhwproject.math.Rect;
 import ru.gbhwproject.math.Rnd;
 import ru.gbhwproject.pool.BulletPool;
+import ru.gbhwproject.pool.ExplosionPool;
 
 public class Enemy extends Ship {
 
-    public Enemy(BulletPool bulletPool, Rect worldBounds) {
+    public Enemy(BulletPool bulletPool, ExplosionPool explosionPool, Rect worldBounds) {
         this.bulletPool = bulletPool;
+        this.explosionPool = explosionPool;
         this.worldBounds = worldBounds;
         v = new Vector2();
         v0 = new Vector2();

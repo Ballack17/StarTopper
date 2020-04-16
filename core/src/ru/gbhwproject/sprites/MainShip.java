@@ -16,6 +16,7 @@ public class MainShip extends Ship {
     private static final float SHIP_HEIGHT = 0.11f;
     private static final float BOTTOM_MARGIN = 0.05f;
     private static final int INVALID_POINTER = -1;
+    Vector2 v = new Vector2();
 
     private boolean pressedLeft;
     private boolean pressedRight;
@@ -33,12 +34,23 @@ public class MainShip extends Ship {
         bulletRegion = atlas.findRegion("bulletMainShip");
         bulletV = new Vector2(0, 0.5f);
         v0 = new Vector2(0.2f, 0);
-        v = new Vector2();
+
         reloadInterval = 0.25f;
         reloadTimer = reloadInterval;
         bulletHeight = 0.01f;
         damage = 1;
-        hp = 1;
+        hp = 100;
+    }
+
+    public void startNewGame(Rect worldBounds) {
+        flushDestroy();
+        hp = 100;
+        pressedLeft = false;
+        pressedRight = false;
+        leftPointer = INVALID_POINTER;
+        rightPointer = INVALID_POINTER;
+        stop();
+        pos.x = worldBounds.pos.x;
     }
 
     @Override
@@ -185,4 +197,6 @@ public class MainShip extends Ship {
     private void stop() {
         v.setZero();
     }
+
+    public float getV() {return v.x;}
 }

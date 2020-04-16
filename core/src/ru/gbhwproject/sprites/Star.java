@@ -13,11 +13,17 @@ public class Star extends Sprite {
 
 
     private Vector2 v;
+    private float vDefault;
     private Rect worldBounds;
 
     private float animateInterval = 0.5f;
     private float animateTimer;
     private float height;
+
+    private static final int INVALID_POINTER = -1;
+
+    private int leftPointer = INVALID_POINTER;
+    private int rightPointer = INVALID_POINTER;
 
     public Star(TextureAtlas atlas) throws GameException {
         super(atlas.findRegion("star"));
@@ -25,6 +31,7 @@ public class Star extends Sprite {
         float vx = Rnd.nextFloat(-0.005f, 0.005f);
         float vy = Rnd.nextFloat(-0.03f, -0.06f);
         v = new Vector2(vx, vy);
+        vDefault = v.x;
         animateTimer = Rnd.nextFloat(0, 0.5f);
     }
 
@@ -64,5 +71,50 @@ public class Star extends Sprite {
         if (getRight() < worldBounds.getLeft()) {
             setLeft(worldBounds.getRight());
         }
+    }
+
+    public void setV(float vx) {
+        this.v.x = v.x + vx;
+    }
+
+    public void setvDefault() {this.v.x = vDefault;}
+
+    @Override
+    public boolean touchDown(Vector2 touch, int pointer, int button) {
+            if (touch.x < worldBounds.pos.x) {
+                if (leftPointer != INVALID_POINTER) {
+                    return false;
+                }
+                leftPointer = pointer;
+                setV(0.3f);
+            } else {
+                if (rightPointer != INVALID_POINTER) {
+                    return false;
+                }
+                rightPointer = pointer;
+                setV(-0.3f);
+            }
+            return false;
+        }
+
+
+    @Override
+    public boolean touchUp(Vector2 touch, int pointer, int button) {
+        if (pointer == leftPointer) {
+            leftPointer = INVALID_POINTER;
+            if (rightPointer != INVALID_POINTER) {
+                setV(-0.3f);
+            } else {
+                setvDefault();
+            }
+        } else if (pointer == rightPointer) {
+            rightPointer = INVALID_POINTER;
+            if (leftPointer != INVALID_POINTER) {
+                setV(0.3f);
+            } else {
+                setvDefault();
+            }
+        }
+        return false;
     }
 }

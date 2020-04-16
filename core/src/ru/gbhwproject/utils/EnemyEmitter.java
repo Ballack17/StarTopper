@@ -53,6 +53,8 @@ public class EnemyEmitter {
 
     private final EnemyPool enemyPool;
 
+    private int level = 1;
+
     public EnemyEmitter(TextureAtlas atlas, EnemyPool enemyPool, Rect worldBounds, Sound shootSound) {
         this.worldBounds = worldBounds;
         this.shootSound = shootSound;
@@ -70,7 +72,8 @@ public class EnemyEmitter {
     }
 
 
-    public void generate(float delta) {
+    public void generate(float delta, int frags) {
+        level = frags / 10 + 1;
         float type = (float) Math.random();
         if (type < 0.996) {generateSolo(delta);}
         else {generateSeries(delta);}
@@ -179,5 +182,8 @@ public class EnemyEmitter {
         enemy.setBottom(worldBounds.getTop());
         }
 
+    public int getLevel() {
+        return level;
+    }
     }
 

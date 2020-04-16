@@ -1,58 +1,60 @@
 package ru.gbhwproject.sprites;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 import ru.gbhwproject.base.ScaledButton;
 import ru.gbhwproject.exception.GameException;
 import ru.gbhwproject.math.Rect;
-import ru.gbhwproject.pool.BulletPool;
-import ru.gbhwproject.pool.EnemyPool;
-import ru.gbhwproject.pool.ExplosionPool;
-import ru.gbhwproject.sprites.MainShip;
+
 import ru.gbhwproject.screen.GameScreen;
-import ru.gbhwproject.sprites.enemies.Enemy;
 
 public class ButtonNewGame extends ScaledButton {
 
-    private BulletPool bulletPool;
-    private ExplosionPool explosionPool;
-    private EnemyPool enemyPool;
-    private MainShip mainShip;
-    private boolean gameState;
+    private static final float MAX_SCALE = 1.05f;
+    private static final float MIN_SCALE = 1f;
+    private static final float ANIMATE_INTERVAL = 0.05f;
 
+    private GameScreen gameScreen;
+    private boolean isGrow;
 
-    public ButtonNewGame(TextureAtlas atlas,BulletPool bulletPool, EnemyPool enemyPool, ExplosionPool explosionPool,MainShip mainShip) throws GameException {
+    private float animateTimer;
+
+    public ButtonNewGame(TextureAtlas atlas, GameScreen gameScreen) throws GameException {
         super(atlas.findRegion("button_new_game"));
-        this.bulletPool = bulletPool;
-        this.enemyPool = enemyPool;
-        this.explosionPool = explosionPool;
-        this.mainShip = mainShip;
-        gameState = true;
+        this.gameScreen = gameScreen;
+        this.isGrow = true;
+    }
+
+    @Override
+    public void update(float delta) {
+        animateTimer += delta;
+        if (animateTimer < ANIMATE_INTERVAL) {
+            return;
+        }
+        animateTimer = 0f;
+        if (isGrow) {
+            scale += delta;
+            if (scale >= MAX_SCALE) {
+                scale = MAX_SCALE;
+                isGrow = false;
+            }
+        } else {
+            scale -= delta;
+            if (scale <= MIN_SCALE) {
+                scale = MIN_SCALE;
+                isGrow = true;
+            }
+        }
     }
 
     @Override
     public void resize(Rect worldBounds) {
-        setHeightProportion(0.07f);
-        setBottom(- 0.1f);
+        setHeightProportion(0.05f);
+        setBottom(-0.05f);
     }
 
     @Override
     public void action() {
-        System.out.println("NewGame");
-        bulletPool.dispose();
-        enemyPool.dispose();
-        explosionPool.dispose();
-        mainShip.setHp(100);
-        gameState = true;
-    }
-
-    public boolean isGameStarted(){
-        return gameState;
-    }
-    public void gameStateSwitch(){
-        if (isGameStarted()){
-            gameState = false;
-        } else { gameState = true;}
+        gameScreen.startNewGame();
     }
 }

@@ -15,6 +15,8 @@ import ru.gbhwproject.pool.ExplosionPool;
 
 public class Enemy extends Ship {
 
+    private int score;
+
     public Enemy(BulletPool bulletPool, ExplosionPool explosionPool, Rect worldBounds) {
         this.bulletPool = bulletPool;
         this.explosionPool = explosionPool;
@@ -50,7 +52,8 @@ public class Enemy extends Ship {
             float shootVolume,
             int hp,
             float height,
-            boolean shootable
+            boolean shootable,
+            int score
     ) {
         this.regions = regions;
         this.v0.set(v0);
@@ -65,6 +68,11 @@ public class Enemy extends Ship {
         this.hp = hp;
         this.v.set(v0);
         this.shootable = shootable;
+        this.score = score;
         setHeightProportion(height);
+    }
+
+    public int getScore() {
+        return score;
     }
 }

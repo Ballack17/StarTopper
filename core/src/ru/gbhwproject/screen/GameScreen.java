@@ -1,6 +1,7 @@
 package ru.gbhwproject.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
@@ -39,6 +40,8 @@ public class GameScreen extends BaseScreen {
     private static final String FRAGS = "Frags: ";
     private static final String HP = "HP: ";
     private static final String LEVEL = "Level: ";
+    private static final String SCORE = "Score: ";
+    private static final String HIGHSCORE = "High Score: ";
 
     private Texture bg;
     private Background background;
@@ -64,10 +67,16 @@ public class GameScreen extends BaseScreen {
     private State state;
     private State prevState;
 
+    private int score;
+    public  int highScore;
+    public Preferences prefs;
+
     private Font font;
     private StringBuilder sbFrags;
     private StringBuilder sbHP;
     private StringBuilder sbLevel;
+    private StringBuilder sbScore;
+    private StringBuilder sbHighscore;
 
     private int frags;
 
@@ -90,6 +99,12 @@ public class GameScreen extends BaseScreen {
         sbFrags = new StringBuilder();
         sbHP = new StringBuilder();
         sbLevel = new StringBuilder();
+        sbScore = new StringBuilder();
+        sbHighscore = new StringBuilder();
+
+        score=0;
+        prefs = Gdx.app.getPreferences("My Preferences"); //получаем файл персональных данных
+        highScore = prefs.getInteger("highscore"); //получаем текущий лучший результат
         music = Gdx.audio.newMusic(Gdx.files.internal("sounds/music.mp3"));
         music.setLooping(true);
         music.play();
@@ -104,6 +119,7 @@ public class GameScreen extends BaseScreen {
         bulletPool.freeAllActiveObjects();
         enemyPool.freeAllActiveObjects();
         explosionPool.freeAllActiveObjects();
+        score = 0;
     }
 
     @Override
@@ -153,6 +169,8 @@ public class GameScreen extends BaseScreen {
         laserSound.dispose();
         explosion.dispose();
         font.dispose();
+        prefs.putInteger("highscore", highScore);
+        prefs.flush(); //убедиться, что настройки сохранены
         super.dispose();
     }
 
@@ -180,6 +198,7 @@ public class GameScreen extends BaseScreen {
             for (Star star: stars) {star.touchDown(touch, pointer, button);}
         } else if (state == State.GAME_OVER) {
             buttonNewGame.touchDown(touch, pointer, button);
+            buttonExit.touchDown(touch, pointer, button);
         }
         return false;
     }
@@ -193,6 +212,7 @@ public class GameScreen extends BaseScreen {
             for (Star star: stars) {star.touchUp(touch, pointer, button);}
         } else if (state == State.GAME_OVER) {
             buttonNewGame.touchUp(touch, pointer, button);
+            buttonExit.touchUp(touch,pointer,button);
         }
         return false;
     }
@@ -246,6 +266,8 @@ public class GameScreen extends BaseScreen {
             if (mainShip.pos.dst(enemy.pos) < minDist) {
                 enemy.destroyBoom();
                 frags++;
+                score += enemy.getScore();
+                if (score > highScore) {highScore = score;}
                 mainShip.damage(enemy.getDamage());
             }
             for (Bullet bullet : bulletList) {
@@ -257,6 +279,8 @@ public class GameScreen extends BaseScreen {
                     bullet.destroy();
                     if (enemy.isDestroyed()) {
                         frags++;
+                        score += enemy.getScore();
+                        if (score > highScore) {highScore = score;}
                     }
                 }
             }
@@ -289,6 +313,7 @@ public class GameScreen extends BaseScreen {
         for (Star star : stars) {
             star.draw(batch);
         }
+
         switch (state) {
             case PLAYING:
                 mainShip.draw(batch);
@@ -310,6 +335,10 @@ public class GameScreen extends BaseScreen {
         sbFrags.setLength(0);
         sbHP.setLength(0);
         sbLevel.setLength(0);
+        sbScore.setLength(0);
+        sbHighscore.setLength(0);
+        font.draw(batch, sbHighscore.append(HIGHSCORE).append(highScore), worldBounds.getRight() - FONT_MARGIN, worldBounds.getBottom() + 0.05f, Align.right);
+        font.draw(batch, sbScore.append(SCORE).append(score), worldBounds.getLeft() + FONT_MARGIN, worldBounds.getBottom() + 0.05f);
         font.draw(batch, sbFrags.append(FRAGS).append(frags), worldBounds.getLeft() + FONT_MARGIN, worldBounds.getTop() - FONT_MARGIN);
         font.draw(batch, sbHP.append(HP).append(mainShip.getHp()), worldBounds.pos.x, worldBounds.getTop() - FONT_MARGIN, Align.center);
         font.draw(batch, sbLevel.append(LEVEL).append(enemyEmitter.getLevel()), worldBounds.getRight() - FONT_MARGIN, worldBounds.getTop() - FONT_MARGIN, Align.right);

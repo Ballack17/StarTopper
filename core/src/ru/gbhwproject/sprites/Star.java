@@ -86,13 +86,13 @@ public class Star extends Sprite {
                     return false;
                 }
                 leftPointer = pointer;
-                setV(0.3f);
+                setV(0.03f);
             } else {
                 if (rightPointer != INVALID_POINTER) {
                     return false;
                 }
                 rightPointer = pointer;
-                setV(-0.3f);
+                setV(-0.03f);
             }
             return false;
         }

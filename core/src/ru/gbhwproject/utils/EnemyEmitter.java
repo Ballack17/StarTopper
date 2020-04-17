@@ -19,6 +19,7 @@ public class EnemyEmitter {
     private static final float ENEMY_SMALL_RELOAD_INTERVAL = 2f;
     private static final int ENEMY_SMALL_HP = 1;
     private static final float ENEMY_SMALL_SHOOT_VOLUME = 0.1f;
+    private static final int ENEMY_SMALL_SCORE = 1;
 
     private static final float ENEMY_MEDIUM_HEIGHT = 0.125f;
     private static final float ENEMY_MEDIUM_BULLET_HEIGHT = 0.015f;
@@ -27,6 +28,7 @@ public class EnemyEmitter {
     private static final float ENEMY_MEDIUM_RELOAD_INTERVAL = 2f;
     private static final int ENEMY_MEDIUM_HP = 5;
     private static final float ENEMY_MEDIUM_SHOOT_VOLUME = 0.4f;
+    private static final int ENEMY_MEDIUM_SCORE = 5;
 
     private static final float ENEMY_BIG_HEIGHT = 0.15f;
     private static final float ENEMY_BIG_BULLET_HEIGHT = 0.02f;
@@ -35,6 +37,7 @@ public class EnemyEmitter {
     private static final float ENEMY_BIG_RELOAD_INTERVAL = 3f;
     private static final int ENEMY_BIG_HP = 10;
     private static final float ENEMY_BIG_SHOOT_VOLUME = 0.9f;
+    private static final int ENEMY_BIG_SCORE = 10;
 
     private Rect worldBounds;
     private Sound shootSound;
@@ -123,7 +126,8 @@ public class EnemyEmitter {
                 ENEMY_SMALL_SHOOT_VOLUME,
                 ENEMY_SMALL_HP,
                 ENEMY_SMALL_HEIGHT,
-                true
+                true,
+                ENEMY_SMALL_SCORE
                 );
     }
     private void smallSetSerie(Enemy enemy, Vector2 v) {
@@ -139,7 +143,8 @@ public class EnemyEmitter {
                 ENEMY_SMALL_SHOOT_VOLUME,
                 ENEMY_SMALL_HP,
                 0.06f,
-                false
+                false,
+                ENEMY_SMALL_SCORE*2
         );
     }
 
@@ -156,7 +161,8 @@ public class EnemyEmitter {
                 ENEMY_MEDIUM_SHOOT_VOLUME,
                 ENEMY_MEDIUM_HP,
                 ENEMY_MEDIUM_HEIGHT,
-                true
+                true,
+                ENEMY_MEDIUM_SCORE
                 );
         }
 
@@ -173,7 +179,8 @@ public class EnemyEmitter {
                 ENEMY_BIG_SHOOT_VOLUME,
                 ENEMY_BIG_HP,
                 ENEMY_BIG_HEIGHT,
-                true
+                true,
+                ENEMY_BIG_SCORE
                 );
         }
 
@@ -185,5 +192,6 @@ public class EnemyEmitter {
     public int getLevel() {
         return level;
     }
+
     }
 
